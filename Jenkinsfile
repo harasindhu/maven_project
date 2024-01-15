@@ -34,13 +34,13 @@ pipeline {
    
    stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
         DOCKERFILE_LOCATION = "maven_project/webapp/Dockerfile"
         REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
       steps {
         script {
-            docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
+            dockerImage = docker.build dockerimagename
+            docker.withRegistry('https://registry.hub.docker.com', "docker-cred") {
                 dockerImage.push()
             }
         }
