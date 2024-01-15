@@ -1,0 +1,24 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: my-app
+  labels: 
+     app: myapp
+
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: myapp
+
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: sample-tomcat
+        image: myproject/ultimate-cicd:replaceImageTag
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
