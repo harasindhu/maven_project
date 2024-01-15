@@ -1,9 +1,6 @@
 pipeline {
  agent any
-    tools{
-      maven 'mvn'
-    }
-  environment {
+    environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker-cred')
         DOCKER_IMAGE_NAME = 'sindhu212/cicd'
     }
@@ -13,9 +10,9 @@ pipeline {
          git branch: 'main', url: 'https://github.com/iamkishore0/maven_project.git'
        }
     }
-   stage('Build and Test') {
+   stage('Build') {
       steps {
-      sh 'mvn install'
+      sh 'mvn clean package'
       }
     }
    
