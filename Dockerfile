@@ -4,8 +4,9 @@ FROM maven:3.8.4-openjdk-11-slim AS build
 # Set the working directory in the build stage
 WORKDIR /app
 
-# Copy the source code to the build stage
-COPY . .
+# Copy only the necessary files (pom.xml, src) to the build stage
+COPY pom.xml .
+COPY src src
 
 # Build the application
 RUN mvn clean package
