@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy only the necessary files (pom.xml, src) to the build stage
 COPY pom.xml .
-COPY src src
+
 
 # Build the application
 RUN mvn clean package
