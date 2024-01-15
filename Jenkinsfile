@@ -32,20 +32,40 @@ pipeline {
       }
     }
    
-   stage('Build and Push Docker Image') {
-      environment {
-        DOCKERFILE_LOCATION = "maven_project/webapp/Dockerfile"
-        REGISTRY_CREDENTIALS = credentials('docker-cred')
-      }
-      steps {
-        script {
-            dockerImage = docker.build dockerimagename
-            docker.withRegistry('https://registry.hub.docker.com', "docker-cred") {
-                dockerImage.push()
+  environment {
+        DOCKER_HUB_CREDENTIALS = credentials('docker-cred')
+        DOCKER_IMAGE_NAME = 'sindhu212/cicd'
+    }
+
+    stages {
+        stage('Build Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                }
             }
         }
-      }
-    }
+
+        stage('Push Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Pull Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
+                        docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").pull()
+                    }
+                }
+            }
+        }
+
   stage('Update Deployment File') {
         environment {
             GIT_REPO_NAME = "maven_project"
