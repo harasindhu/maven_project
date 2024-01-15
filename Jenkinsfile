@@ -13,13 +13,7 @@ pipeline {
          git branch: 'main', url: 'https://github.com/iamkishore0/maven_project.git'
        }
     }
-   stage('Build') {
-      steps {
-      sh 'mvn clean package'
-      }
-    }
-
- stage('Static Code Analysis') {
+  stage('Static Code Analysis') {
       environment {
        
             scannerHome = tool 'sonarqube'
@@ -44,6 +38,7 @@ pipeline {
             steps {
                 script {
                     dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    sh 'docker build -t your-docker-image-name:${env.BUILD_NUMBER} .'
                 }
             }
         }
