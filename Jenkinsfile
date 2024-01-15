@@ -8,15 +8,15 @@ pipeline {
         DOCKER_IMAGE_NAME = 'sindhu212/cicd'
     }
  stages {
- stage('Build and Test') {
-      steps {
-      sh 'mvn clean package'
-      }
-    }
- stage('Checkout') {
+  stage('Checkout') {
       steps {
          git branch: 'main', url: 'https://github.com/iamkishore0/maven_project.git'
        }
+    }
+   stage('Build and Test') {
+      steps {
+      sh 'mvn clean package'
+      }
     }
     
    stage('Static Code Analysis') {
