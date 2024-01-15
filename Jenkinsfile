@@ -8,11 +8,7 @@ pipeline {
         DOCKER_IMAGE_NAME = 'sindhu212/cicd'
     }
  stages {
-  stage('Checkout') {
-      steps {
-         git branch: 'main', url: 'https://github.com/iamkishore0/maven_project.git'
-       }
-    }
+ 
   stage('Static Code Analysis') {
       environment {
        
