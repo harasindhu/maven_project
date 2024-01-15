@@ -7,9 +7,15 @@ pipeline {
         DOCKER_HUB_CREDENTIALS = credentials('docker-cred')
         DOCKER_IMAGE_NAME = 'sindhu212/cicd'
     }
- 
  stages {
-    stage('Checkout') {
+ stage('Build and Test') {
+      steps {
+        sh 'ls -ltr'
+        // build the project and create a JAR file
+        sh 'cd maven_project/webapp && mvn clean package'
+      }
+    }
+ stage('Checkout') {
       steps {
          git branch: 'main', url: 'https://github.com/iamkishore0/maven_project.git'
        }
