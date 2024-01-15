@@ -32,23 +32,19 @@ pipeline {
       }
     }
    
-    stage('Build image') {
-      steps{
-        script {
-          dockerImage = docker.build dockerimagename
-        }
-      }
-    }
-
-    stage('Pushing Image') {
+   stage('Build and Push Docker Image') {
       environment {
-               registryCredential = 'dockerhublogin'
-           }
-      steps{
+        DOCKER_IMAGE = "sindhu212/ultimate-cicd:${BUILD_NUMBER}"
+        DOCKERFILE_LOCATION = "maven_project/webapp/Dockerfile"
+        REGISTRY_CREDENTIALS = credentials('docker-cred')
+      }
+      steps {
         script {
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
-          }
+            sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
+            def dockerImage = docker.image("${DOCKER_IMAGE}")
+            docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
+                dockerImage.push()
+            }
         }
       }
     }
