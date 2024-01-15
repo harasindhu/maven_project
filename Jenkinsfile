@@ -29,27 +29,16 @@ pipeline {
         }
       }
     }
-   
-  stage('Build Image') {
+   stage('Build and Push Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
-                    sh 'docker build -t your-docker-image-name:${env.BUILD_NUMBER} .'
+                    def dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    dockerImage.push()
                 }
             }
         }
 
-        stage('Push Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
-
-        stage('Pull Image') {
+   stage('Pull Image') {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
