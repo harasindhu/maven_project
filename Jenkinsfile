@@ -1,5 +1,8 @@
 pipeline {
  agent any
+ tools {
+  maven 'mvn'
+ }
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker-cred')
         DOCKER_IMAGE_NAME = 'sindhu212/cicd'
