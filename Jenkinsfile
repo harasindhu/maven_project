@@ -34,7 +34,7 @@ pipeline {
    
    stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "sindhu212/ultimate-cicd:${BUILD_NUMBER}"
+        DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
         DOCKERFILE_LOCATION = "maven_project/webapp/Dockerfile"
         REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
