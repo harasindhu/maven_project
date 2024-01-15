@@ -3,6 +3,10 @@ pipeline {
     tools{
       maven 'mvn'
     }
+  environment {
+        DOCKER_HUB_CREDENTIALS = credentials('docker-cred')
+        DOCKER_IMAGE_NAME = 'sindhu212/cicd'
+    }
  
  stages {
     stage('Checkout') {
@@ -32,13 +36,8 @@ pipeline {
       }
     }
    
-stage { 
-  environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-cred')
-        DOCKER_IMAGE_NAME = 'sindhu212/cicd'
-    }
-
-    stage('Build Image') {
+ stages {
+        stage('Build Image') {
             steps {
                 script {
                     dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
@@ -65,8 +64,9 @@ stage {
                 }
             }
         }
+    }
 
-  stage('Update Deployment File') {
+stage('Update Deployment File') {
         environment {
             GIT_REPO_NAME = "maven_project"
             GIT_USER_NAME = "harasindhu"
