@@ -9,7 +9,7 @@ COPY pom.xml .
 
 
 # Build the application
-RUN mvn clean package
+#RUN mvn clean package
 
 # Use a smaller OpenJDK image as the final stage
 FROM openjdk:11-jre-slim
