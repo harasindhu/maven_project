@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: sample-tomcat
-        image: myproject/ultimate-cicd:replaceImageTag
+        image: sindhu212/web-app-pipeline:replaceImageTag
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
