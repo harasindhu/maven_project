@@ -1,7 +1,8 @@
 pipeline {
  agent any
  tools {
-  maven 'mvn'
+        jdk 'Java17'
+        maven 'maven3'
  }
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker-cred')
