@@ -43,10 +43,11 @@ stage('Update Deployment File') {
         environment {
             GIT_REPO_NAME = "maven_project"
             GIT_USER_NAME = "harasindhu"
+            GITHUB_PASSWORD = "sindhu21295"
         }
         steps {
-            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                sh '''
+           withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD')]) {
+                    sh '''
                     BUILD_NUMBER=${BUILD_NUMBER}
                     sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" maven_project/deployment.yml
                     git add maven_project/deployment.yml
