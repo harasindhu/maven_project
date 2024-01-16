@@ -8,7 +8,13 @@ pipeline {
         DOCKER_IMAGE_NAME = 'sindhu212/cicd'
     }
  stages {
- 
+ stage('Build and Test') {
+      steps {
+        // build the project and create a JAR file
+        sh 'mvn clean package'
+      }
+    }
+   
   stage('Static Code Analysis') {
       environment {
        
