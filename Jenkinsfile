@@ -15,26 +15,6 @@ pipeline {
       }
     }
    
-  stage('Static Code Analysis') {
-      environment {
-       
-            scannerHome = tool 'sonarqube'
-
-            }
-
-            steps {
-
-             withSonarQubeEnv('sonarqube'){
-
-                 sh "${scannerHome}/bin/sonar-scanner \
-                  -Dsonar.login=87da6f33c59af2f60af0af0ce897b099c79732fa\
-                  -Dsonar.host.url=https://sonarcloud.io \
-                  -Dsonar.organization=cicd123\
-                  -Dsonar.projectKey=cicd123_myproject \
-                  -Dsonar.java.binaries=./ "
-        }
-      }
-    }
    stage('Build and Push Docker Image') {
             steps {
                 script {
