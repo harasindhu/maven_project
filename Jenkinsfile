@@ -46,6 +46,8 @@ stage('Update Deployment File') {
             GITHUB_PASSWORD = "sindhu21295"
         }
         steps {
+         sh 'pwd'
+         sh 'ls -l maven_project/'
            withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD')]) {
                     sh '''
                     BUILD_NUMBER=${BUILD_NUMBER}
