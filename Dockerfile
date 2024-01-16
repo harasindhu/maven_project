@@ -18,7 +18,7 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 
 # Copy the JAR file from the build stage to the final stage
-COPY --from=build /app/target/your-application.jar .
+COPY --from=build /app/target/webapp.jar .
 
 # Specify the command to run on container start
-CMD ["java", "-jar", "your-application.jar"]
+CMD ["java", "-jar", "webapp.jar"]
