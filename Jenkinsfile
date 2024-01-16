@@ -5,8 +5,12 @@ pipeline {
         maven 'maven3'
  }
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-cred')
-        DOCKER_IMAGE_NAME = 'sindhu212/cicd'
+            APP_NAME = "web-app-pipeline"
+            RELEASE = "1.0.0"
+            DOCKER_USER = "sindhu212"
+            DOCKER_PASS = 'docker-cred'
+            IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+            IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
  stages {
   stage('Checkout') {
@@ -21,25 +25,20 @@ pipeline {
       }
     }
    
-   stage('Build and Push Docker Image') {
+   stage("Build & Push Docker Image") {
             steps {
                 script {
-                    def dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
-                    dockerImage.push()
-                }
-            }
-        }
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image = docker.build "${IMAGE_NAME}"
+                    }
 
-   stage('Pull Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
-                        docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").pull()
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
                     }
                 }
             }
-        }
-    
+   }
 stage('Update Deployment File') {
         environment {
             GIT_REPO_NAME = "maven_project"
